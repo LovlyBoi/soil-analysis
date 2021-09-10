@@ -12,8 +12,10 @@
         </el-aside>
         <el-container>
           <el-main>
-            <!-- 一级路由 -->
-            <router-view></router-view>
+            <!-- 展示面板，一级路由 -->
+            <keep-alive>
+              <router-view></router-view>
+            </keep-alive>
           </el-main>
         </el-container>
       </el-container>
@@ -30,7 +32,7 @@ export default {
   data() {
     return {};
   },
-
+  methods: {},
   components: {
     headerCom,
     sideBar,

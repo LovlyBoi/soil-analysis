@@ -16,13 +16,13 @@
       </h2>
 
       <el-form-item label="用户名" prop="username" >
-        <el-input v-model="loginForm.username" placeholder="用户名" id="username"></el-input>
+        <el-input v-model.trim="loginForm.username" placeholder="用户名" id="username"></el-input>
       </el-form-item>
 
       <el-form-item label="密码" prop="pass">
         <el-input
           type="password"
-          v-model="loginForm.pass"
+          v-model.trim="loginForm.pass"
           autocomplete="off"
           placeholder="密码"
           id="password"
@@ -33,7 +33,7 @@
         >记住我</el-checkbox
       >
 
-      <el-button type="primary" id="logbtn" @click="submit" :loading="diasblebtn">立即登录</el-button>
+      <el-button type="primary" id="logbtn" @click="submit" :loading="disablebtn">立即登录</el-button>
     </el-form>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "",
+        username: window.localStorage.getItem('username') || "",
         pass: "",
         code: "",
       },
@@ -86,11 +86,19 @@ export default {
       setTimeout(() => {
         this.fullscreenLoading = false
       }, 10000)
-      let res = await checkUser(userName, passWord)
+      // api 调用
+      let userInfo = {
+        username: userName,
+        password: passWord,
+        rememberMe: this.remember
+      }
+      let res = await checkUser(userInfo)
       // 关闭遮罩层
       this.fullscreenLoading = false
       this.disablebtn = false;
+
       // console.log("res-----",res);
+
       try {
         if (res.data && res.data.code == 202) {
           this.loginForm.pass = ''
@@ -101,7 +109,8 @@ export default {
           // 更改登录信息
           store.setLogin(true)
           // 路由导航到 fun1
-          this.$router.replace("/fun1");
+          this.$router.replace("/fun1")
+          store.setCurrEl(1)
           // 提交用户信息到 store
           store.setUserInfo(this.loginForm)
           // 提交用户信息到 localStorage
@@ -118,7 +127,7 @@ export default {
           duration: 1500,
         });
         // this.loading = false
-        console.log(e);
+        console.warn(e);
       }
     },
 

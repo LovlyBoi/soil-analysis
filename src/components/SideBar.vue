@@ -11,7 +11,7 @@
             'fun1-wrapper': true,
           }"
         >
-          <a href="javascript:;" @click="toFun1(1)">功能一</a>
+          <a href="javascript:;" @click="toFun1(1)">查成分</a>
         </div>
       </el-col>
     </el-row>
@@ -25,7 +25,7 @@
             'fun1-wrapper': true,
           }"
         >
-          <a href="javascript:;" @click="toFun2(2)">功能二</a>
+          <a href="javascript:;" @click="toFun2(2)">建议量</a>
         </div>
       </el-col>
     </el-row>

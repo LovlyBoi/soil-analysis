@@ -6,16 +6,26 @@
         id="logina"
         @click="showLogin"
         :class="{
-          active: shareState.currEl === 0,
+          active: shareState.currEl === -1,
         }"
         >登录</a
+      >
+      <a
+        href="javascript:;"
+        id="zhucea"
+        @click="showZhuCe"
+        :class="{
+          active: shareState.currEl === -2,
+        }"
+        
+        >注册</a
       >
     </div>
 
     <div v-else class="showHello">
       <a href="javascript:;" style="cursor: auto">你好{{ "，" + username }}</a>
 
-      <h1>土壤成分分析</h1>
+      <h1 style="letter-spacing: 1.5px; transform: scale(1.2)">土壤成分分析</h1>
 
       <a href="javascript:;" id="exit" @click="exitLogin">退出登录</a>
     </div>
@@ -33,15 +43,23 @@ export default {
     };
   },
   methods: {
+    // 登录点击事件
     showLogin() {
       // 修改当前高亮元素
-      store.setCurrEl(0);
+      store.setCurrEl(-1);
       // 跳转到用户登录界面
       this.$router.push("/login").catch((e) => e);
     },
+
+    // 退出登录
     exitLogin() {
       store.setLogin(false);
     },
+
+    // 注册点击事件
+    showZhuCe(){
+      alert('注册')
+    }
   },
   computed: {
     // 用户名
@@ -62,7 +80,11 @@ export default {
   display: flex;
 }
 
-#logina:hover {
+#logina, #zhuce{
+  margin: 0 10px;
+}
+
+#logina:hover,#zhucea:hover {
   transition: all 150ms;
   color: #409eff;
 }

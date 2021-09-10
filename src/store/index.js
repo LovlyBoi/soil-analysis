@@ -21,7 +21,7 @@ const store = {
   // 提交用户信息接口
   setUserInfo(userinfo){
     this.state.userInfo.username = userinfo.username || ""
-    console.log("userInfo: ",this.state.userInfo)
+    // console.log("userInfo: ",this.state.userInfo)
   }
 }
 
