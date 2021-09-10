@@ -1,24 +1,11 @@
-# new_solid
+# 土壤成分分析
 
-## Project setup
-```
-npm install
-```
+该项目用来进行土壤成分分析，是一个前后端分离的项目。前端使用 **Vue2.x + Element UI + 腾讯位置服务** 开发，后端使用 **Java** 开发。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 功能
 
-### Compiles and minifies for production
-```
-npm run build
-```
+我也不知道干啥用
 
-### Lints and fixes files
-```
-npm run lint
-```
+### 开发经历
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+前端界面经历了一次重构，一次重写，后端接口调了无数遍。

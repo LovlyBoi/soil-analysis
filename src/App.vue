@@ -27,15 +27,40 @@
 import headerCom from "./components/HeaderCom";
 import sideBar from "./components/SideBar";
 
+import store from "./store/index.js";
+import { checkCookie } from "./api/api.js";
+
 export default {
   name: "App",
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    // 尝试 cookie 登录
+    async cookieLogin() {
+      console.log("正在 cookie 登录...");
+      let res = await checkCookie();
+      try {
+        if (res.data && res.data.code == "202") {
+          console.warn("cookie 登陆失败", res.data);
+
+          return;
+        } else if (res.data && res.data.code == "201") {
+          store.setLogin(true);
+          store.setUserInfo(this.loginForm);
+        }
+      } catch (e) {
+        console.warn("cookie 登录出错", e);
+      }
+    },
+  },
   components: {
     headerCom,
     sideBar,
+  },
+  mounted() {
+    console.log("mounted");
+    this.cookieLogin();
   },
 };
 </script>

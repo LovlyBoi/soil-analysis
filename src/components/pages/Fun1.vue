@@ -249,7 +249,7 @@ export default {
         this.clearInfo();
         let res = await sendJingWei(this.jingwei.jing, this.jingwei.wei, this.crop);
         res = res.data.data;
-        console.log(res);
+        // console.log(res);
 
         // 展示提示
         if (res.isDirectMeasured === "false") {
@@ -323,7 +323,7 @@ export default {
         ]);
         jingwei.jing = evt.latLng.getLng().toFixed(6);
         jingwei.wei = evt.latLng.getLat().toFixed(6);
-        console.log(jingwei)
+        // console.log(jingwei)
       });
 
       // 标记点层

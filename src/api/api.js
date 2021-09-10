@@ -4,6 +4,7 @@ import { Message } from 'element-ui';
 
 
 axios.defaults.timeout = 8000;
+// axios.defaults.withCredentials = true;
 
 // 响应拦截器
 axios.interceptors.response.use(success => {
@@ -85,7 +86,7 @@ axios.interceptors.response.use(success => {
   return Promise.reject(error)
 })
 
-// 登录查询
+// 账号密码登录查询 POST
 export function checkUser(userInfo) {
   return axios({
     method: 'POST',
@@ -94,6 +95,17 @@ export function checkUser(userInfo) {
       username: userInfo.username,
       password: userInfo.password,
       rememberMe: userInfo.rememberMe
+    }
+  })
+}
+
+// 自动 Cookie 登录查询
+export function checkCookie(){
+  return axios({
+    method: 'POST',
+    url: 'http://120.79.189.55:8080/content1-2.0/login',
+    data: {
+      isCookieLogin: true
     }
   })
 }
