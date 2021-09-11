@@ -4,13 +4,24 @@ import { Message } from 'element-ui';
 
 
 axios.defaults.timeout = 8000;
+axios.defaults.baseURL = "http://120.79.189.55:8080/content1-2.0"
 // axios.defaults.withCredentials = true;
 
 // 响应拦截器
 axios.interceptors.response.use(success => {
   // console.log(success)
+  // 检查重复值，不需要弹窗
+  if (success.config.url == '/checkRepeatUsername' ||
+    success.config.url == '/checkRepeatId_card') {
+    return success
+  }
+
   if (success.status && success.status == 200) {
-    if (success.data.code == 500 || success.data.code == 401 || success.data.code == 403 || success.data.code == 202) {
+
+    if (success.data.code == 500 ||
+      success.data.code == 400 ||
+      success.data.code == 403 ||
+      success.data.code == 202) {
       Message({
         center: true,
         message: success.data.msg,
@@ -90,7 +101,7 @@ axios.interceptors.response.use(success => {
 export function checkUser(userInfo) {
   return axios({
     method: 'POST',
-    url: 'http://120.79.189.55:8080/content1-2.0/login',
+    url: '/login',
     data: {
       username: userInfo.username,
       password: userInfo.password,
@@ -99,13 +110,49 @@ export function checkUser(userInfo) {
   })
 }
 
-// 自动 Cookie 登录查询
-export function checkCookie(){
+// 注册
+export function register(userInfo) {
   return axios({
     method: 'POST',
-    url: 'http://120.79.189.55:8080/content1-2.0/login',
+    url: '/registerUser',
+    data: {
+      username: userInfo.username,
+      password: userInfo.password,
+      id_card: userInfo.ID,
+      peasantName: userInfo.peasantName
+    }
+  })
+}
+
+// 自动 Cookie 登录查询
+export function checkCookie() {
+  return axios({
+    method: 'POST',
+    url: '/login',
     data: {
       isCookieLogin: true
+    }
+  })
+}
+
+// 检查用户名是否重复
+export function checkUsernameRepeat(username) {
+  return axios({
+    method: 'POST',
+    url: '/checkRepeatUsername',
+    data: {
+      username
+    }
+  })
+}
+
+// 检查身份证号是否重复
+export function checkID_Card(ID) {
+  return axios({
+    method: 'POST',
+    url: '/checkRepeatId_card',
+    data: {
+      "id_card": ID
     }
   })
 }
@@ -126,7 +173,7 @@ export function checkCookie(){
 export function sendJingWei(jing, wei, crop) {
   return axios({
     methods: 'GET',
-    url: 'http://120.79.189.55:8080/content1-2.0/fun1',
+    url: '/fun1',
     params: {
       longitude: jing,
       latitude: wei,
@@ -139,7 +186,7 @@ export function sendJingWei(jing, wei, crop) {
 export function sendInfo(MEN, MOP, MOK, MOM, crop) {
   return axios({
     methods: 'GET',
-    url: 'http://120.79.189.55:8080/content1-2.0/fun2',
+    url: '/fun2',
     params: {
       mea_Effective_N: MEN,
       mea_Olsen_P: MOP,

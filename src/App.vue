@@ -38,7 +38,7 @@ export default {
   methods: {
     // 尝试 cookie 登录
     async cookieLogin() {
-      console.log("正在 cookie 登录...");
+      // console.log("正在 cookie 登录...");
       let res = await checkCookie();
       try {
         if (res.data && res.data.code == "202") {
@@ -59,8 +59,8 @@ export default {
     sideBar,
   },
   mounted() {
-    console.log("mounted");
-    this.cookieLogin();
+    // 页面挂载时尝试 cookie 登录
+    // this.cookieLogin();
   },
 };
 </script>
@@ -83,7 +83,7 @@ export default {
   background-color: whitesmoke;
   color: #222;
   text-align: center;
-  line-height: 160px;
+  line-height: 18px;
 }
 
 body > .el-container {

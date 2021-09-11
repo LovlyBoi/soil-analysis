@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import userLogin from '../components/pages/UserLogin'
 import fun1 from '../components/pages/Fun1'
 import fun2 from '../components/pages/Fun2'
+import register from '../components/pages/Register'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -23,10 +24,10 @@ const router = new VueRouter({
       path:'/login',
       component: userLogin
     },
-    // {
-    //   path:'/userInfo',
-    //   component: UserInfo
-    // }
+    {
+      path:'/register',
+      component: register
+    }
   ]
 })
 

@@ -13,7 +13,7 @@
       <a
         href="javascript:;"
         id="zhucea"
-        @click="showZhuCe"
+        @click="showRegister"
         :class="{
           active: shareState.currEl === -2,
         }"
@@ -57,8 +57,11 @@ export default {
     },
 
     // 注册点击事件
-    showZhuCe(){
-      alert('注册')
+    showRegister(){
+      // 修改当前高亮元素
+      store.setCurrEl(-2);
+      // 跳转到用户登录界面
+      this.$router.push("/register").catch((e) => e);
     }
   },
   computed: {

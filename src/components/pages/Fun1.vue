@@ -79,7 +79,7 @@
           </el-select>
         </el-col>
 
-        <el-button type="primary" plain>提交</el-button>
+        <el-button type="primary" plain @click="commitJingWei">提交</el-button>
       </el-row>
     </div>
     <!-- 地图组件 -->
@@ -240,6 +240,12 @@ export default {
       }
       if (this.jingwei.jing === "" && this.jingwei.wei === "") {
         this.clearInfo();
+        this.$message({
+          center: true,
+          message: "请先选择一个点，或填写经纬度",
+          type: "warning",
+          duration: 2000,
+        });
         return;
       }
       if (
