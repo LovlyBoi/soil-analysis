@@ -144,7 +144,6 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.disablebtn = true;
           // 登录逻辑
           this.login(this.loginForm.username, this.loginForm.pass);
         } else {
@@ -154,7 +153,7 @@ export default {
             type: "error",
             duration: 1500,
           });
-          return false;
+          return;
         }
       });
     },

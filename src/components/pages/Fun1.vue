@@ -11,7 +11,7 @@
               name="jingdu"
               placeholder="请输入经度"
               type="text"
-              v-model.number="jingwei.jing"
+              v-model.trim="jingwei.jing"
             /></div
         ></el-col>
 
@@ -22,7 +22,7 @@
               name="weidu"
               placeholder="请输入纬度"
               type="text"
-              v-model.number="jingwei.wei"
+              v-model.trim="jingwei.wei"
             />
           </div>
         </el-col>
@@ -51,7 +51,7 @@
               name="jingdu"
               placeholder="请输入经度"
               type="text"
-              v-model.number="jingwei.jing"
+              v-model.trim="jingwei.jing"
             /></div
         ></el-col>
 
@@ -62,7 +62,7 @@
               name="weidu"
               placeholder="请输入纬度"
               type="text"
-              v-model.number="jingwei.wei"
+              v-model.trim="jingwei.wei"
             />
           </div>
         </el-col>
@@ -160,8 +160,8 @@ let map = null,
   markers = null;
 
 let jingwei = {
-  jing: '',
-  wei: '',
+  jing: "",
+  wei: "",
 };
 
 export default {
@@ -229,6 +229,69 @@ export default {
     },
     // 发送 fun1 查询
     async commitJingWei() {
+      // 判断是否输入经纬度
+      if (this.jingwei.jing === "") {
+        if (this.jingwei.wei !== "") {
+          this.$message({
+            center: true,
+            message: "请输入纬度",
+            type: "warning",
+            duration: 1500,
+          });
+          return;
+        } else {
+          this.clearInfo();
+          this.$message({
+            center: true,
+            message: "请先选择一个点，或填写经纬度",
+            type: "warning",
+            duration: 2000,
+          });
+          return;
+        }
+      } else {
+        if (this.jingwei.wei === "") {
+          this.$message({
+            center: true,
+            message: "请输入经度",
+            type: "warning",
+            duration: 1500,
+          });
+          return;
+        }
+      }
+      // 判断经纬度格式
+      let reg1 = /^\d+$|^\d*\.\d+$/g;
+      let reg2 = /^\d+$|^\d*\.\d+$/g;
+
+      if (
+        reg1.test(this.jingwei.jing) !== true ||
+        reg2.test(this.jingwei.wei) !== true
+      ) {
+        this.$message({
+          center: true,
+          message: "经纬度格式不正确",
+          type: "error",
+          duration: 1500,
+        });
+        return;
+      }
+      // 判断经纬度数值大小
+      if (
+        parseFloat(this.jingwei.jing) < 0 ||
+        parseFloat(this.jingwei.jing) >= 180 ||
+        parseFloat(this.jingwei.wei) < 0 ||
+        parseFloat(this.jingwei.wei) >= 90
+      ) {
+        this.$message({
+          center: true,
+          message: "请输入正确的经纬度",
+          type: "error",
+          duration: 1500,
+        });
+        return;
+      }
+      // 判断是否登录
       if (!this.shareState.isLogin) {
         this.$message({
           center: true,
@@ -238,70 +301,54 @@ export default {
         });
         return;
       }
-      if (this.jingwei.jing === "" && this.jingwei.wei === "") {
-        this.clearInfo();
+
+      // 清楚展示框内的信息
+      this.clearInfo();
+      // 发送查询请求
+      let res = await sendJingWei(
+        this.jingwei.jing,
+        this.jingwei.wei,
+        this.crop
+      );
+      res = res.data.data;
+      // console.log(res);
+
+      // 展示提示
+      if (res.isDirectMeasured === "false") {
         this.$message({
           center: true,
-          message: "请先选择一个点，或填写经纬度",
+          message: "暂无该地点的参考值，已为您寻找最近的参考点",
           type: "warning",
-          duration: 2000,
+          duration: 4000,
         });
-        return;
       }
-      if (
-        (this.jingwei.jing > 0 && this.wei <= 180) ||
-        (this.jingwei.wei > 0 && this.jingwei.wei <= 90)
-      ) {
-        this.clearInfo();
-        let res = await sendJingWei(this.jingwei.jing, this.jingwei.wei, this.crop);
-        res = res.data.data;
-        // console.log(res);
 
-        // 展示提示
-        if (res.isDirectMeasured === "false") {
-          this.$message({
-            center: true,
-            message: "暂无该地点的参考值，已为您寻找最近的参考点",
-            type: "warning",
-            duration: 4000,
-          });
-        }
+      // 在地图上标记出来
+      let min_point = new window.TMap.LatLng(
+        Number.parseFloat(res.min_Latitude),
+        Number.parseFloat(res.min_Longitude)
+      );
+      markers.remove(["min_Marker"]);
+      markers.add([
+        {
+          id: "min_Marker",
+          styleId: "redMarker",
+          position: min_point,
+        },
+      ]);
 
-        // 在地图上标记出来
-        let min_point = new window.TMap.LatLng(
-          Number.parseFloat(res.min_Latitude),
-          Number.parseFloat(res.min_Longitude)
-        );
-        markers.remove(["min_Marker"]);
-        markers.add([
-          {
-            id: "min_Marker",
-            styleId: "redMarker",
-            position: min_point,
-          },
-        ]);
-
-        this.name_countryside = res.name_countryside;
-        this.name_village = res.name_village;
-        this.mea_Effective_N = res.mea_Effective_N;
-        this.mea_getOlsen_P = res.mea_getOlsen_P;
-        this.mea_getOlsen_K = res.mea_getOlsen_K;
-        this.mea_getOrganic_matter = res.mea_getOrganic_matter;
-        this.sug_Effective_N = res.sug_Effective_N;
-        this.sug_Olsen_P = res.sug_Olsen_P;
-        this.sug_Olsen_K = res.sug_Olsen_K;
-        this.sug_Organic_matter = res.sug_Organic_matter;
-        this.min_Longitude = res.min_Longitude;
-        this.min_Latitude = res.min_Latitude;
-      } else {
-        this.$message({
-          center: true,
-          message: "请输入正确的经纬度",
-          type: "error",
-          duration: 1500,
-        });
-        return;
-      }
+      this.name_countryside = res.name_countryside;
+      this.name_village = res.name_village;
+      this.mea_Effective_N = res.mea_Effective_N;
+      this.mea_getOlsen_P = res.mea_getOlsen_P;
+      this.mea_getOlsen_K = res.mea_getOlsen_K;
+      this.mea_getOrganic_matter = res.mea_getOrganic_matter;
+      this.sug_Effective_N = res.sug_Effective_N;
+      this.sug_Olsen_P = res.sug_Olsen_P;
+      this.sug_Olsen_K = res.sug_Olsen_K;
+      this.sug_Organic_matter = res.sug_Organic_matter;
+      this.min_Longitude = res.min_Longitude;
+      this.min_Latitude = res.min_Latitude;
     },
 
     // 初始化地图
@@ -339,14 +386,14 @@ export default {
         styles: {
           //点标注的相关样式
           // 红色标记点样式
-          "redMarker": new TMap.MarkerStyle({
+          redMarker: new TMap.MarkerStyle({
             width: 25,
             height: 25,
             anchor: { x: 16, y: 32 },
             // src: "public/img/map-marker-red.png",
           }),
           // 蓝色标记点样式
-          "blueMarker": new TMap.MarkerStyle({
+          blueMarker: new TMap.MarkerStyle({
             width: 25,
             height: 25,
             anchor: { x: 16, y: 32 },
@@ -355,7 +402,6 @@ export default {
         },
         geometries: [],
       });
-
     },
   },
   mounted() {
