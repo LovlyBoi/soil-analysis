@@ -60,7 +60,7 @@ export default {
   },
   mounted() {
     // 页面挂载时尝试 cookie 登录
-    // this.cookieLogin();
+    this.cookieLogin();
   },
 };
 </script>

@@ -234,7 +234,7 @@ export default {
         if (this.jingwei.wei !== "") {
           this.$message({
             center: true,
-            message: "请输入纬度",
+            message: "请输入经度",
             type: "warning",
             duration: 1500,
           });
@@ -253,7 +253,7 @@ export default {
         if (this.jingwei.wei === "") {
           this.$message({
             center: true,
-            message: "请输入经度",
+            message: "请输入纬度",
             type: "warning",
             duration: 1500,
           });
