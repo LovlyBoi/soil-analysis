@@ -25,7 +25,7 @@
     <div v-else class="showHello">
       <a href="javascript:;" style="cursor: auto">你好{{ "，" + username }}</a>
 
-      <h1 style="letter-spacing: 1.5px; transform: scale(1.2)">土壤成分分析</h1>
+      <h1 style="font-size: 2vw">土壤成分分析</h1>
 
       <a href="javascript:;" id="exit" @click="exitLogin">退出登录</a>
     </div>

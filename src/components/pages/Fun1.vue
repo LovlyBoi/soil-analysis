@@ -417,7 +417,7 @@ export default {
 }
 
 .wrapper {
-  height: 710px;
+  /* height: 710px; */
   line-height: 18px;
 }
 

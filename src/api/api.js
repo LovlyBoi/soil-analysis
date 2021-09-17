@@ -4,8 +4,8 @@ import { Message } from 'element-ui';
 
 
 axios.defaults.timeout = 8000;
-axios.defaults.baseURL = "http://120.79.189.55:10086/content1-2.0"
-// axios.defaults.baseURL = "/api"
+// axios.defaults.baseURL = "http://120.79.189.55:10086/content1-2.0"
+axios.defaults.baseURL = "/api"
 // axios.defaults.withCredentials = true;
 
 // 响应拦截器
@@ -22,6 +22,10 @@ axios.interceptors.response.use(success => {
     if (success.data.code == 500 ||
       success.data.code == 400 ||
       success.data.code == 403 ||
+      success.data.code == 420 ||
+      success.data.code == 421 ||
+      success.data.code == 422 ||
+      success.data.code == 423 ||
       success.data.code == 202) {
       Message({
         center: true,

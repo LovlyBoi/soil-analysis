@@ -47,7 +47,7 @@ export default {
           return;
         } else if (res.data && res.data.code == "201") {
           store.setLogin(true);
-          store.setUserInfo(this.loginForm);
+          // store.setUserInfo(this.loginForm);
         }
       } catch (e) {
         console.warn("cookie 登录出错", e);
