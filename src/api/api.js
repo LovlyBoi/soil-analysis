@@ -45,50 +45,6 @@ axios.interceptors.response.use(success => {
     }
   }
   return success;
-  // }, error => {
-  //   if (error.response.code == 404 || error.response.code == 504) {
-  //     Message({
-  //       center: true,
-  //       message: "哦吼，服务器可能被吃了呢o(╯□╰)o",
-  //       type: "error",
-  //       duration: 1500
-  //     })
-  //   }
-  //   else if (error.response.code == 403) {
-  //     Message({
-  //       center: true,
-  //       message: "权限不足，请联系管理员",
-  //       type: "error",
-  //       duration: 1500
-  //     })
-  //   }
-  //   else if (error.response.code == 401) {
-  //     Message({
-  //       center: true,
-  //       message: "还没有登陆哟！",
-  //       type: "error",
-  //       duration: 1500
-  //     })
-  //     router.replace('/login')
-  //   }
-  //   else {
-  //     if (error.response.data.message) {
-  //       Message({
-  //         center: true,
-  //         message: error.response.data.message,
-  //         type: "error",
-  //         duration: 1500
-  //       })
-  //     }
-  //     else {
-  //       Message({
-  //         center: true,
-  //         message: "好像发生了什么不知道的问题呢",
-  //         type: "error",
-  //         duration: 1500
-  //       })
-  //     }
-  //   }
 }, error => {
   console.warn(error);
   if (error.message == 'Network Error') {
