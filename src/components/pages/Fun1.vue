@@ -4,19 +4,20 @@
     <div class="head-wrapper">
       <!-- 大屏幕响应式 -->
       <el-row :gutter="10" class="hidden-sm-and-down">
-        <el-col :span="7"
-          ><div class="grid-content jingdu-box">
+        <el-col :span="7">
+          <div class="grid-content jingdu-box">
             <el-input
               id="jingdu"
               name="jingdu"
               placeholder="请输入经度"
               type="text"
               v-model.trim="jingwei.jing"
-            /></div
-        ></el-col>
+            />
+          </div>
+        </el-col>
 
-        <el-col :span="7" :offset="1"
-          ><div class="grid-content weidu-box">
+        <el-col :span="7" :offset="1">
+          <div class="grid-content weidu-box">
             <el-input
               id="weidu"
               name="weidu"
@@ -34,8 +35,7 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
-            >
-            </el-option>
+            ></el-option>
           </el-select>
         </el-col>
 
@@ -44,19 +44,20 @@
 
       <!-- 小屏幕响应式 -->
       <el-row :gutter="10" class="hidden-md-and-up">
-        <el-col :span="22" :offset="1"
-          ><div class="grid-content jingdu-box">
+        <el-col :span="22" :offset="1">
+          <div class="grid-content jingdu-box">
             <el-input
               id="jingdu"
               name="jingdu"
               placeholder="请输入经度"
               type="text"
               v-model.trim="jingwei.jing"
-            /></div
-        ></el-col>
+            />
+          </div>
+        </el-col>
 
-        <el-col :span="22" :offset="1"
-          ><div class="grid-content weidu-box">
+        <el-col :span="22" :offset="1">
+          <div class="grid-content weidu-box">
             <el-input
               id="weidu"
               name="weidu"
@@ -74,8 +75,7 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
-            >
-            </el-option>
+            ></el-option>
           </el-select>
         </el-col>
 
@@ -96,55 +96,55 @@
         border
       >
         <el-descriptions-item>
-          <template slot="label"> 乡/镇名称 </template>
+          <template slot="label">乡/镇名称</template>
           {{ name_countryside }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 村名称 </template>
+          <template slot="label">村名称</template>
           {{ name_village }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 土壤碱解氮含量 </template>
+          <template slot="label">土壤碱解氮含量</template>
           {{ mea_Effective_N }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 土壤有效磷含量 </template>
+          <template slot="label">土壤有效磷含量</template>
           {{ mea_getOlsen_P }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 土壤速效钾含量 </template>
+          <template slot="label">土壤速效钾含量</template>
           {{ mea_getOlsen_K }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 土壤有机质含量 </template>
+          <template slot="label">土壤有机质含量</template>
           {{ mea_getOrganic_matter }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 碱解氮的参考施肥量 </template>
+          <template slot="label">碱解氮的参考施肥量</template>
           {{ sug_Effective_N }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 有效磷的参考施肥量 </template>
+          <template slot="label">有效磷的参考施肥量</template>
           {{ sug_Olsen_P }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 速效钾的参考施肥量 </template>
+          <template slot="label">速效钾的参考施肥量</template>
           {{ sug_Olsen_K }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 有机质的参考施肥量 </template>
+          <template slot="label">有机质的参考施肥量</template>
           {{ sug_Organic_matter }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 有机质的参考施肥量 </template>
+          <template slot="label">有机质的参考施肥量</template>
           {{ sug_Organic_matter }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 代替测量点的经度 </template>
+          <template slot="label">代替测量点的经度</template>
           {{ min_Longitude }}
         </el-descriptions-item>
         <el-descriptions-item>
-          <template slot="label"> 代替测量点的纬度 </template>
+          <template slot="label">代替测量点的纬度</template>
           {{ min_Latitude }}
         </el-descriptions-item>
       </el-descriptions>
@@ -159,17 +159,15 @@ import { sendJingWei } from "../../api/api.js";
 let map = null,
   markers = null;
 
-let jingwei = {
-  jing: "",
-  wei: "",
-};
-
 export default {
   name: "Fun1",
   data() {
     return {
       // 点击地图的经纬度
-      jingwei,
+      jingwei: {
+        jing: "",
+        wei: "",
+      },
       // Store
       shareState: store.state,
       options: [
@@ -194,8 +192,6 @@ export default {
           label: "糯玉米",
         },
       ],
-      // jingdu: "",
-      // weidu: "",
       crop: "玉米",
       name_countryside: "",
       name_village: "",
@@ -227,83 +223,92 @@ export default {
       this.min_Longitude = "";
       this.min_Latitude = "";
     },
-    // 发送 fun1 查询
-    async commitJingWei() {
-      // 判断是否输入经纬度
-      if (this.jingwei.jing === "") {
-        if (this.jingwei.wei !== "") {
-          this.$message({
-            center: true,
-            message: "请输入经度",
-            type: "warning",
-            duration: 1500,
-          });
-          return;
+    
+    // 抽离提示语句
+    message(type, msg, duration = 1500) {
+      this.$message({
+        center: true,
+        message: msg,
+        type,
+        duration,
+      });
+    },
+
+    // 抽离赋值语句
+    assignResult(res) {
+      this.name_countryside = res.name_countryside;
+      this.name_village = res.name_village;
+      this.mea_Effective_N = res.mea_Effective_N;
+      this.mea_getOlsen_P = res.mea_getOlsen_P;
+      this.mea_getOlsen_K = res.mea_getOlsen_K;
+      this.mea_getOrganic_matter = res.mea_getOrganic_matter;
+      this.sug_Effective_N = res.sug_Effective_N;
+      this.sug_Olsen_P = res.sug_Olsen_P;
+      this.sug_Olsen_K = res.sug_Olsen_K;
+      this.sug_Organic_matter = res.sug_Organic_matter;
+      this.min_Longitude = res.min_Longitude;
+      this.min_Latitude = res.min_Latitude;
+    },
+
+    // 抽离检查语句
+    checkJingWeiRule(jing, wei){
+      // 判断是否输入了经纬度
+      if (jing === "") {
+        if (wei !== "") {
+          this.message("warning", "请输入经度");
+          return false;
         } else {
           this.clearInfo();
-          this.$message({
-            center: true,
-            message: "请先选择一个点，或填写经纬度",
-            type: "warning",
-            duration: 2000,
-          });
-          return;
+          this.message("warning", "请先选择一个点，或填写经纬度", 2000);
+          return false;
         }
       } else {
-        if (this.jingwei.wei === "") {
-          this.$message({
-            center: true,
-            message: "请输入纬度",
-            type: "warning",
-            duration: 1500,
-          });
-          return;
+        if (wei === "") {
+          this.message("warning", "请输入纬度");
+          return false;
         }
       }
-      // 判断经纬度格式
-      let reg1 = /^\d+$|^\d*\.\d+$/g;
-      let reg2 = /^\d+$|^\d*\.\d+$/g;
 
+      // 判断经纬度格式
       if (
-        reg1.test(this.jingwei.jing) !== true ||
-        reg2.test(this.jingwei.wei) !== true
+        (/^\d+$|^\d*\.\d+$/g).test(jing) !== true ||
+        (/^\d+$|^\d*\.\d+$/g).test(wei) !== true
       ) {
-        this.$message({
-          center: true,
-          message: "经纬度格式不正确",
-          type: "error",
-          duration: 1500,
-        });
-        return;
+        this.message("error", "经纬度格式不正确");
+        return false;
       }
+
       // 判断经纬度数值大小
       if (
-        parseFloat(this.jingwei.jing) < 0 ||
-        parseFloat(this.jingwei.jing) >= 180 ||
-        parseFloat(this.jingwei.wei) < 0 ||
-        parseFloat(this.jingwei.wei) >= 90
+        parseFloat(jing) < 0 ||
+        parseFloat(jing) >= 180 ||
+        parseFloat(wei) < 0 ||
+        parseFloat(wei) >= 90
       ) {
-        this.$message({
-          center: true,
-          message: "请输入正确的经纬度",
-          type: "error",
-          duration: 1500,
-        });
+        this.message("error", "请输入正确的经纬度");
+        return false;
+      }
+
+      // 检查完返回true
+      return true;
+    },
+
+    // 发送 fun1 查询
+    async commitJingWei() {
+      // 检查经纬度格式
+      if(!this.checkJingWeiRule(this.jingwei.jing, this.jingwei.wei)){
         return;
       }
+      
       // 判断是否登录
       if (!this.shareState.isLogin) {
-        this.$message({
-          center: true,
-          message: "请先登录",
-          type: "error",
-          duration: 1500,
-        });
+        this.message("error", "请先登录");
         return;
       }
 
-      // 清楚展示框内的信息
+      // 清除展示框内的信息
       this.clearInfo();
+
       // 发送查询请求
       let res = await sendJingWei(
         this.jingwei.jing,
@@ -315,12 +320,7 @@ export default {
 
       // 展示提示
       if (res.isDirectMeasured === "false") {
-        this.$message({
-          center: true,
-          message: "暂无该地点的参考值，已为您寻找最近的参考点",
-          type: "warning",
-          duration: 4000,
-        });
+        this.message("warning", "暂无该地点的参考值，已为您寻找最近的参考点", 4000)
       }
 
       // 在地图上标记出来
@@ -337,18 +337,8 @@ export default {
         },
       ]);
 
-      this.name_countryside = res.name_countryside;
-      this.name_village = res.name_village;
-      this.mea_Effective_N = res.mea_Effective_N;
-      this.mea_getOlsen_P = res.mea_getOlsen_P;
-      this.mea_getOlsen_K = res.mea_getOlsen_K;
-      this.mea_getOrganic_matter = res.mea_getOrganic_matter;
-      this.sug_Effective_N = res.sug_Effective_N;
-      this.sug_Olsen_P = res.sug_Olsen_P;
-      this.sug_Olsen_K = res.sug_Olsen_K;
-      this.sug_Organic_matter = res.sug_Organic_matter;
-      this.min_Longitude = res.min_Longitude;
-      this.min_Latitude = res.min_Latitude;
+      // 数据赋值
+      this.assignResult(res)
     },
 
     // 初始化地图
@@ -374,8 +364,8 @@ export default {
             position: evt.latLng,
           },
         ]);
-        jingwei.jing = evt.latLng.getLng().toFixed(6);
-        jingwei.wei = evt.latLng.getLat().toFixed(6);
+        this.jingwei.jing = evt.latLng.getLng().toFixed(6);
+        this.jingwei.wei = evt.latLng.getLat().toFixed(6);
         // console.log(jingwei)
       });
 

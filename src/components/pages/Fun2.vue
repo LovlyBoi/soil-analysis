@@ -1,6 +1,13 @@
 <template>
   <div class="wrapper">
-    <h3 style="font-weight: 600; letter-spacing: 1.5px; font-size: 1.5vw; margin-bottom: 20px">
+    <h3
+      style="
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        font-size: 1.5vw;
+        margin-bottom: 20px;
+      "
+    >
       输入成分，查看建议施肥量
     </h3>
     <!-- 头部查询组件 -->
@@ -66,7 +73,13 @@
           </el-select>
         </el-col>
 
-        <el-button type="primary" plain @click="commitInfo" style="margin-top: 10px">提交</el-button>
+        <el-button
+          type="primary"
+          plain
+          @click="commitInfo"
+          style="margin-top: 10px"
+          >提交</el-button
+        >
       </el-row>
 
       <!-- 小屏幕响应式 -->
@@ -128,7 +141,13 @@
           </el-select>
         </el-col>
 
-        <el-button type="primary" plain @click="commitInfo" style="margin-top: 10px">提交</el-button>
+        <el-button
+          type="primary"
+          plain
+          @click="commitInfo"
+          style="margin-top: 10px"
+          >提交</el-button
+        >
       </el-row>
     </div>
 
@@ -212,24 +231,12 @@ export default {
       this.sug_Organic_matter = "";
     },
 
-    async commitInfo() {
-      // 装进数组里，方便下面判断
-      let meaArr = [
-        this.mea_Effective_N,
-        this.mea_Olsen_P,
-        this.mea_Olsen_K,
-        this.mea_Organic_matter,
-      ];
-      // 判断是否登录
-      if (!this.shareState.isLogin) {
-        this.$message({
-          center: true,
-          message: "请先登录",
-          type: "error",
-          duration: 1500,
-        });
+    // 检查数据格式
+    checkDataRule(meaArr) {
+      if (!Array.isArray(meaArr)) {
         return;
       }
+
       // 判断输入值的格式
       if (
         meaArr.some((item) => {
@@ -241,8 +248,8 @@ export default {
         let notEmptyItems = meaArr.filter((item) => {
           return item === "" ? false : true;
         });
-        // 对所有非空项进行格式判断
-        // 只要有不合格的就进行提示
+
+        // 对所有非空项进行格式判断，只要有不合格的就进行提示
         if (
           notEmptyItems.some((item) => {
             return !/^\d+$|^\d*\.\d+$/g.test(item);
@@ -254,15 +261,43 @@ export default {
             type: "error",
             duration: 1500,
           });
-          return;
+          return false;
         }
+        // 格式合格
+        return true;
+      }
+      // 一项都没有输入，清空展示框
+      else {
+        this.clearInfo();
+        return false;
+      }
+    },
 
+    async commitInfo() {
+      // 装进数组里，方便下面判断
+      let meaArr = [
+        this.mea_Effective_N,
+        this.mea_Olsen_P,
+        this.mea_Olsen_K,
+        this.mea_Organic_matter,
+      ];
+
+      // 判断是否登录
+      if (!this.shareState.isLogin) {
+        this.$message({
+          center: true,
+          message: "请先登录",
+          type: "error",
+          duration: 1500,
+        });
+        return;
+      }
+
+      // 检测格式
+      if(this.checkDataRule(meaArr)){
         // 检测完格式了，发送请求
-        // 发送请求
         let res = await sendInfo(...meaArr, this.crop);
-
-        console.log(res.data);
-
+        // console.log(res.data);
         res = res.data.data;
         if (res) {
           this.sug_Effective_N = res.sug_Effective_N;
@@ -270,10 +305,6 @@ export default {
           this.sug_Olsen_K = res.sug_Olsen_K;
           this.sug_Organic_matter = res.sug_Organic_matter;
         }
-      }
-      // 一项都没有输入，清空展示框
-      else {
-        this.clearInfo();
       }
     },
   },
