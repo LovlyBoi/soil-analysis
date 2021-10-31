@@ -6,7 +6,6 @@ import { Message } from 'element-ui';
 axios.defaults.timeout = 8000;
 // axios.defaults.baseURL = "http://120.79.189.55:10086/content1-2.0"
 axios.defaults.baseURL = "/api"
-// axios.defaults.withCredentials = true;
 
 // 响应拦截器
 axios.interceptors.response.use(success => {

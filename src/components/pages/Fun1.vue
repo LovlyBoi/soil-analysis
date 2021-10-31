@@ -12,6 +12,7 @@
               placeholder="请输入经度"
               type="text"
               v-model.trim="jingwei.jing"
+              clearable
             />
           </div>
         </el-col>
@@ -24,6 +25,7 @@
               placeholder="请输入纬度"
               type="text"
               v-model.trim="jingwei.wei"
+              clearable
             />
           </div>
         </el-col>
@@ -52,6 +54,7 @@
               placeholder="请输入经度"
               type="text"
               v-model.trim="jingwei.jing"
+              clearable
             />
           </div>
         </el-col>
@@ -64,6 +67,7 @@
               placeholder="请输入纬度"
               type="text"
               v-model.trim="jingwei.wei"
+              clearable
             />
           </div>
         </el-col>
@@ -223,7 +227,7 @@ export default {
       this.min_Longitude = "";
       this.min_Latitude = "";
     },
-    
+
     // 抽离提示语句
     message(type, msg, duration = 1500) {
       this.$message({
@@ -251,7 +255,7 @@ export default {
     },
 
     // 抽离检查语句
-    checkJingWeiRule(jing, wei){
+    checkJingWeiRule(jing, wei) {
       // 判断是否输入了经纬度
       if (jing === "") {
         if (wei !== "") {
@@ -271,8 +275,8 @@ export default {
 
       // 判断经纬度格式
       if (
-        (/^\d+$|^\d*\.\d+$/g).test(jing) !== true ||
-        (/^\d+$|^\d*\.\d+$/g).test(wei) !== true
+        /^\d+$|^\d*\.\d+$/g.test(jing) !== true ||
+        /^\d+$|^\d*\.\d+$/g.test(wei) !== true
       ) {
         this.message("error", "经纬度格式不正确");
         return false;
@@ -296,10 +300,10 @@ export default {
     // 发送 fun1 查询
     async commitJingWei() {
       // 检查经纬度格式
-      if(!this.checkJingWeiRule(this.jingwei.jing, this.jingwei.wei)){
+      if (!this.checkJingWeiRule(this.jingwei.jing, this.jingwei.wei)) {
         return;
       }
-      
+
       // 判断是否登录
       if (!this.shareState.isLogin) {
         this.message("error", "请先登录");
@@ -320,7 +324,11 @@ export default {
 
       // 展示提示
       if (res.isDirectMeasured === "false") {
-        this.message("warning", "暂无该地点的参考值，已为您寻找最近的参考点", 4000)
+        this.message(
+          "warning",
+          "暂无该地点的参考值，已为您寻找最近的参考点",
+          4000
+        );
       }
 
       // 在地图上标记出来
@@ -338,7 +346,7 @@ export default {
       ]);
 
       // 数据赋值
-      this.assignResult(res)
+      this.assignResult(res);
     },
 
     // 初始化地图
@@ -347,13 +355,17 @@ export default {
 
       //定义地图中心点坐标
       let center = new TMap.LatLng(45.904913, 125.316286);
+
+      let mapContainer = document.getElementById("map-container");
+
       //定义map变量，调用 TMap.Map() 构造函数创建地图
-      map = new TMap.Map(document.getElementById("map-container"), {
+      map = new TMap.Map(mapContainer, {
         center: center, //设置地图中心点坐标
-        zoom: 9, //设置地图缩放级别
+        zoom: 8, //设置地图缩放级别
         pitch: 20, //设置俯仰角
         rotation: 0, //设置地图旋转角度
       });
+
       // 点击任何位置添加一个蓝色标记点
       map.on("click", (evt) => {
         markers.remove(["userMarker"]);
@@ -364,8 +376,12 @@ export default {
             position: evt.latLng,
           },
         ]);
+        // 拿到点击的经纬度
         this.jingwei.jing = evt.latLng.getLng().toFixed(6);
         this.jingwei.wei = evt.latLng.getLat().toFixed(6);
+
+        // 在这里要进行校验，判断经纬度是否超出范围
+
         // console.log(jingwei)
       });
 
@@ -407,7 +423,6 @@ export default {
 }
 
 .wrapper {
-  /* height: 710px; */
   line-height: 18px;
 }
 
